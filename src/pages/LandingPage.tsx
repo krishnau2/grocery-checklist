@@ -1,5 +1,5 @@
 import React from 'react';
-import ListsContent from '../components/ListsContent';
+import GroceryListComponent from '../components/GroceryList';
 import Header from '../components/Header';
 import AddListButton from '../components/AddListButton';
 
@@ -25,7 +25,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ lists, onListClick, onAddNewL
       <Header title="My Lists" />
 
       {/* Lists Content */}
-      <ListsContent lists={lists} onListClick={onListClick} />
+      <GroceryListComponent lists={lists} onListClick={onListClick} />
 
       {/* Floating Action Button */}
       <AddListButton onClick={onAddNewList} />

@@ -7,12 +7,12 @@ interface GroceryList {
   isCompleted: boolean;
 }
 
-interface ListsContentProps {
+interface GroceryListProps {
   lists: GroceryList[];
   onListClick: (listId: string) => void;
 }
 
-const ListsContent: React.FC<ListsContentProps> = ({ lists, onListClick }) => {
+const GroceryList: React.FC<GroceryListProps> = ({ lists, onListClick }) => {
   return (
     <main className="flex-grow p-4 overflow-y-auto">
       <div className="space-y-4">
@@ -44,6 +44,4 @@ const ListsContent: React.FC<ListsContentProps> = ({ lists, onListClick }) => {
   );
 };
 
-export default ListsContent;
-
-
+export default GroceryList;
