@@ -1,34 +1,28 @@
 import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import type { MasterItem, SelectedItem, ShoppingItem } from '../types';
+import masterItemsData from '../../master-items.json';
 
-type GroceryItem = {
-  id: string;
-  name: string;
-  category: string;
-  quantity: number;
-  isSelected: boolean;
+type CreateListPageProps = {
+  onCreateList: (listName: string, items: ShoppingItem[]) => string;
+  onAddItemsToList: (listId: string, items: ShoppingItem[]) => void;
 };
 
-type AddItemsProps = {
-  onBack: () => void;
-  onDone: (selectedItems: GroceryItem[]) => void;
-  listName: string;
-  onListNameChange: (name: string) => void;
-};
+const CreateListPage: React.FC<CreateListPageProps> = ({ onCreateList, onAddItemsToList }) => {
+  const { listId } = useParams<{ listId: string }>();
+  const navigate = useNavigate();
 
-const AddItems: React.FC<AddItemsProps> = ({ 
-  onBack, 
-  onDone, 
-  listName, 
-  onListNameChange 
-}) => {
+  const [listName, setListName] = useState('New List Name');
   const [searchTerm, setSearchTerm] = useState('');
-  const [items, setItems] = useState<GroceryItem[]>([
-    { id: '1', name: 'Apples', category: 'Produce', quantity: 0, isSelected: false },
-    { id: '2', name: 'Bananas', category: 'Produce', quantity: 0, isSelected: false },
-    { id: '3', name: 'Lettuce', category: 'Produce', quantity: 1, isSelected: true },
-    { id: '4', name: 'Milk', category: 'Dairy & Eggs', quantity: 0, isSelected: false },
-    { id: '5', name: 'Eggs', category: 'Dairy & Eggs', quantity: 0, isSelected: false },
-  ]);
+
+  // Initialize items from master-items.json
+  const [items, setItems] = useState<SelectedItem[]>(
+    (masterItemsData as MasterItem[]).map(item => ({
+      ...item,
+      quantity: 0,
+      isSelected: false
+    }))
+  );
 
   const handleQuantityChange = (itemId: string, change: number) => {
     setItems(prevItems =>
@@ -46,38 +40,73 @@ const AddItems: React.FC<AddItemsProps> = ({
 
   const handleDone = () => {
     const selectedItems = items.filter(item => item.isSelected);
-    onDone(selectedItems);
+
+    // Convert to ShoppingItem format
+    const shoppingItems: ShoppingItem[] = selectedItems.map(item => ({
+      id: item.id,
+      name: item.name,
+      quantity: `${item.quantity} ${item.quantity === 1 ? 'item' : 'items'}`,
+      isPurchased: false
+    }));
+
+    if (listId) {
+      // Adding items to existing list
+      onAddItemsToList(listId, shoppingItems);
+      navigate(`/list/${listId}`);
+    } else {
+      // Creating new list
+      const newListId = onCreateList(listName, shoppingItems);
+      navigate(`/list/${newListId}`);
+    }
+  };
+
+  const handleBack = () => {
+    if (listId) {
+      navigate(`/list/${listId}`);
+    } else {
+      navigate('/');
+    }
   };
 
   const selectedCount = items.filter(item => item.isSelected).length;
 
+  // Filter items based on search term
+  const filteredItems = items.filter(item =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   // Group items by category
-  const groupedItems = items.reduce((acc, item) => {
+  const groupedItems = filteredItems.reduce((acc, item) => {
     if (!acc[item.category]) {
       acc[item.category] = [];
     }
     acc[item.category].push(item);
     return acc;
-  }, {} as Record<string, GroceryItem[]>);
+  }, {} as Record<string, SelectedItem[]>);
 
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
       <header className="bg-white p-4 border-b border-gray-200 flex items-center">
         <button
-          onClick={onBack}
+          onClick={handleBack}
           className="text-gray-600 p-2 rounded-full hover:bg-gray-100"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <input
-          type="text"
-          value={listName}
-          onChange={(e) => onListNameChange(e.target.value)}
-          className="text-2xl font-bold text-gray-800 bg-transparent focus:outline-none focus:ring-0 border-none ml-2 w-full"
-        />
+        {!listId && (
+          <input
+            type="text"
+            value={listName}
+            onChange={(e) => setListName(e.target.value)}
+            className="text-2xl font-bold text-gray-800 bg-transparent focus:outline-none focus:ring-0 border-none ml-2 w-full"
+          />
+        )}
+        {listId && (
+          <h1 className="text-2xl font-bold text-gray-800 ml-2">Add Items</h1>
+        )}
       </header>
 
       {/* Items Content */}
@@ -151,4 +180,4 @@ const AddItems: React.FC<AddItemsProps> = ({
   );
 };
 
-export default AddItems; 
+export default CreateListPage;

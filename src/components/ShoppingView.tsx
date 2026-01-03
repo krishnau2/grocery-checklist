@@ -1,21 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Header from './Header';
 import ItemList from './ItemList';
+import type { ShoppingItem } from '../types';
 
-interface ShoppingItem {
-  id: string;
-  name: string;
-  quantity: string;
-  isPurchased: boolean;
-}
-
-interface ShoppingViewProps {
+type ShoppingViewProps = {
   onBack: () => void;
   onAddMoreItems: () => void;
   listName: string;
   items: ShoppingItem[];
   onItemToggle: (itemId: string) => void;
-}
+};
 
 const ShoppingView: React.FC<ShoppingViewProps> = ({
   onBack,

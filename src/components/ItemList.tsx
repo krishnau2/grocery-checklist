@@ -1,14 +1,9 @@
-interface ShoppingItem {
-  id: string;
-  name: string;
-  quantity: string;
-  isPurchased: boolean;
-}
+import type { ShoppingItem } from '../types';
 
-interface ItemListProps {
+type ItemListProps = {
   items: ShoppingItem[];
   onItemToggle: (itemId: string) => void;
-}
+};
 
 const ItemList: React.FC<ItemListProps> = ({ items, onItemToggle }) => {
   return (

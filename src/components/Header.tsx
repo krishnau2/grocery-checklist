@@ -1,10 +1,10 @@
-interface HeaderProps {
+type HeaderProps = {
   title: string;
   button?: {
     onClick: () => void;
     icon: React.ReactNode;
   };
-}
+};
 
 const Header: React.FC<HeaderProps> = ({ title, button }) => {
   return (

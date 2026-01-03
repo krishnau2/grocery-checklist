@@ -1,0 +1,18 @@
+[
+  { "id": "1", "name": "Apples", "category": "Produce" },
+  { "id": "2", "name": "Bananas", "category": "Produce" },
+  { "id": "3", "name": "Lettuce", "category": "Produce" },
+  { "id": "4", "name": "Onions", "category": "Produce" },
+  { "id": "5", "name": "Tomatoes", "category": "Produce" },
+  { "id": "6", "name": "Carrots", "category": "Produce" },
+  { "id": "7", "name": "Milk", "category": "Dairy & Eggs" },
+  { "id": "8", "name": "Eggs", "category": "Dairy & Eggs" },
+  { "id": "9", "name": "Cheese", "category": "Dairy & Eggs" },
+  { "id": "10", "name": "Yogurt", "category": "Dairy & Eggs" },
+  { "id": "11", "name": "Bread", "category": "Bakery" },
+  { "id": "12", "name": "Bagels", "category": "Bakery" },
+  { "id": "13", "name": "Chicken Breast", "category": "Meat" },
+  { "id": "14", "name": "Ground Beef", "category": "Meat" },
+  { "id": "15", "name": "Salmon", "category": "Seafood" },
+  { "id": "16", "name": "Shrimp", "category": "Seafood" }
+]

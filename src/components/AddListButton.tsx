@@ -1,6 +1,6 @@
-interface AddListButtonProps {
+type AddListButtonProps = {
   onClick: () => void;
-}
+};
 
 const AddListButton: React.FC<AddListButtonProps> = ({ onClick }) => {
   return (
